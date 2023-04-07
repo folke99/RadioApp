@@ -25,7 +25,6 @@ class HomeFragment : Fragment() {
     lateinit var mapController: MapController
     lateinit var overlayItem: ArrayList<OverlayItem>
     val location = GeoPoint(65.5840799,22.1975568)
-
     private var _binding: FragmentHomeBinding? = null
 
     // This property is only valid between onCreateView and
@@ -38,6 +37,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        
         Configuration.getInstance().load(context, PreferenceManager.getDefaultSharedPreferences(context));
         Configuration.getInstance().userAgentValue = BuildConfig.APPLICATION_ID;
         binding.mapView.setMultiTouchControls(true)
@@ -48,6 +48,7 @@ class HomeFragment : Fragment() {
         mapController = binding.mapView.controller as MapController
         mapController.setCenter(location)
         mapController.zoomTo(15)
+
         return binding.root
     }
     override fun onDestroyView() {
