@@ -61,7 +61,7 @@ class FavoritesFragment : Fragment() {
                 val duration = Toast.LENGTH_SHORT
                 val toast = Toast.makeText(context, text, duration)
                 toast.show()
-
+                
                 val newFragment = RemoveFavoriteDialogFragment()
                 supportFragmentManager?.let { newFragment.show(it, "test") }
             }
