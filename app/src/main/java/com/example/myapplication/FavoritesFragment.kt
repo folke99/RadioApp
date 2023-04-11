@@ -14,7 +14,7 @@ import com.example.myapplication.databinding.FragmentFavoritesBinding
 
 /**
  * A simple [Fragment] subclass.
- * Use the [HomeFragment.newInstance] factory method to
+ * Use the [MapFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
 class FavoritesFragment : Fragment() {
@@ -62,7 +62,7 @@ class FavoritesFragment : Fragment() {
                 val toast = Toast.makeText(context, text, duration)
                 toast.show()
 
-                val newFragment = RemoveDialogFragment()
+                val newFragment = RemoveFavoriteDialogFragment()
                 supportFragmentManager?.let { newFragment.show(it, "test") }
             }
         })
