@@ -1,7 +1,7 @@
 package com.example.myapplication.network
 
+import com.example.myapplication.model.Station
 import com.example.myapplication.utils.Constants
-import com.ltu.m7019e.v23.themoviedb.network.StationResponse
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
@@ -51,36 +51,28 @@ interface RadioBrowserApiService {
 
     @GET("topclick")
     suspend fun getTopClickedStations(
+        @Query("hidebroken") hidebroken: String = "false",
+        @Query("limit") limit: Int = 10000,
+        @Query("geo") geo: String = "true"
 
-        @Query("hidebroken")
-        hidebroken: String = "false",
-
-        @Query("limit")
-        limit: Int = 10
-
-    ): StationResponse
+    ): List<Station>
 
     @GET("topvote")
     suspend fun getTopVotedStations(
-
-        @Query("hidebroken")
-        hidebroken: String = "false",
-
-        @Query("limit")
-        limit: Int = 10
-
-    ): StationResponse
+        @Query("hidebroken") hideBroken: String = "true",
+        @Query("limit") limit: Int = 10000,
+        @Query("geo") geo: String = "true"
+    ): List<Station>
 
     @GET("search")
     suspend fun getStationByName(
-
-        @Query("hidebroken")
-        hidebroken: String = "false"
-
-    ): StationResponse
+        @Query("hidebroken") hideBroken: String = "true",
+        @Query("limit") limit: Int = 10000,
+        @Query("geo") geo: String = "true"
+    ): List<Station>
 
 }
 
-object RadioBrowserApi {
-    val movieListRetrofitService: RadioBrowserApiService by lazy { stationListRetrofit.create(RadioBrowserApiService::class.java)}
+object RBApi {
+    val radioListRetrofitService: RadioBrowserApiService by lazy { stationListRetrofit.create(RadioBrowserApiService::class.java)}
 }

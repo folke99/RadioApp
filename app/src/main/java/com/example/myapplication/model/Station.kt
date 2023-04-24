@@ -25,14 +25,14 @@ data class Station (
 
     @Json
     @ColumnInfo(name = "favicon")
-    var favicon: String,
+    var favicon: String? = "",
 
     @Json
     @ColumnInfo(name = "geo_lat")
-    var geo_lat: String,
+    var geo_lat: Double? = null,
 
     @Json
     @ColumnInfo(name = "geo_long")
-    var geo_long: String
+    var geo_long: Double? = null
 
 ) : Parcelable
