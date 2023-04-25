@@ -51,10 +51,9 @@ interface RadioBrowserApiService {
 
     @GET("topclick")
     suspend fun getTopClickedStations(
-        @Query("hidebroken") hidebroken: String = "false",
+        @Query("hidebroken") hideBroken: String = "false",
         @Query("limit") limit: Int = 10000,
         @Query("geo") geo: String = "true"
-
     ): List<Station>
 
     @GET("topvote")
@@ -65,12 +64,12 @@ interface RadioBrowserApiService {
     ): List<Station>
 
     @GET("search")
-    suspend fun getStationByName(
+    suspend fun searchStations(
         @Query("hidebroken") hideBroken: String = "true",
-        @Query("limit") limit: Int = 10000,
-        @Query("geo") geo: String = "true"
+        @Query("limit") limit: Int = 10,
+        @Query("geo") geo: String = "true",
+        @Query("name") name: String
     ): List<Station>
-
 }
 
 object RBApi {

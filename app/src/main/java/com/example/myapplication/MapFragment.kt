@@ -40,6 +40,7 @@ class MapFragment : Fragment() {
 
     private lateinit var viewModel: MapViewModel
     private lateinit var viewModelFactory: MapViewModelFactory
+    private lateinit var mapView: MapView
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -54,9 +55,11 @@ class MapFragment : Fragment() {
         viewModelFactory = MapViewModelFactory(application)
         viewModel = ViewModelProvider(this, viewModelFactory)[MapViewModel::class.java]
 
+        mapView = binding.mapView
+
         // Setup the map view
-        Configuration.getInstance().load(context, PreferenceManager.getDefaultSharedPreferences(context));
-        Configuration.getInstance().userAgentValue = BuildConfig.APPLICATION_ID;
+        Configuration.getInstance().load(context, PreferenceManager.getDefaultSharedPreferences(context))
+        Configuration.getInstance().userAgentValue = BuildConfig.APPLICATION_ID
         binding.mapView.setMultiTouchControls(true)
         binding.mapView.setBackgroundColor(Color.BLACK)
         binding.mapView.controller.animateTo(location)
@@ -67,13 +70,14 @@ class MapFragment : Fragment() {
         viewModel.stationList.observe(viewLifecycleOwner) { stationList ->
             stationList?.let {
                 // Setup markers
+                val bitmap = generateCircle(10, Color.GREEN)
                 val markers = stationList // filter out null elements
                     .filter { it.geo_lat != null && it.geo_long != null } // filter out elements with null geo_lat or geo_long
                     .map {
                         val marker = Marker(binding.mapView)
                         marker.position = GeoPoint(it.geo_lat!!, it.geo_long!!)
                         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-                        marker.icon = generateCircle(10, Color.GREEN)
+                        marker.icon = bitmap
                         marker
                     }
 
@@ -124,6 +128,11 @@ class MapFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mapView.setLayerType(View.LAYER_TYPE_HARDWARE, null)
     }
 
     /*
