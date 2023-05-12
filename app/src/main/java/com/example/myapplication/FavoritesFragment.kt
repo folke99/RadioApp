@@ -5,27 +5,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
-import com.example.myapplication.adapter.StationListAdapter
-import com.example.myapplication.adapter.StationListClickListener
-import com.example.myapplication.adapter.StationListLongClickListener
-import com.example.myapplication.database.StationDatabase
-import com.example.myapplication.database.StationDatabaseDao
+import com.example.myapplication.adapter.FavoritesListAdapter
+import com.example.myapplication.adapter.FavoritesListClickListener
+import com.example.myapplication.adapter.FavoritesListLongClickListener
 import com.example.myapplication.databinding.FragmentFavoritesBinding
-import com.example.myapplication.viewmodel.StationListViewModel
-import com.example.myapplication.viewmodel.StationListViewModelFactory
+import com.example.myapplication.utils.RecyclerViewDecorator
+import com.example.myapplication.viewmodel.FavoritesViewModel
+import com.example.myapplication.viewmodel.FavoritesViewModelFactory
+import com.example.myapplication.viewmodel.SharedMiniPlayerViewModel
 
 /**
- * A simple [Fragment] subclass.
- * Use the [MapFragment.newInstance] factory method to
- * create an instance of this fragment.
+ * A fragment for displaying favorite stations
  */
 class FavoritesFragment : Fragment() {
 
-    private lateinit var viewModel: StationListViewModel
-    private lateinit var viewModelFactory: StationListViewModelFactory
-
-    private lateinit var stationDatabaseDao: StationDatabaseDao
+    private lateinit var viewModel: FavoritesViewModel
+    private lateinit var viewModelFactory: FavoritesViewModelFactory
+    private val sharedMiniPlayerViewModel: SharedMiniPlayerViewModel by activityViewModels()
 
     private var _binding: FragmentFavoritesBinding? = null
     private val binding get() = _binding!!
@@ -37,58 +35,37 @@ class FavoritesFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentFavoritesBinding.inflate(inflater)
 
+        val appContainer = RadioApp.getAppContainer(requireContext())
+        val stationRepository = appContainer.stationRepository
         val application = requireNotNull(this.activity).application
-        stationDatabaseDao = StationDatabase.getInstance(application).stationDatabaseDao
 
-        viewModelFactory = StationListViewModelFactory(stationDatabaseDao, application)
-        viewModel = ViewModelProvider(this, viewModelFactory)[StationListViewModel::class.java]
+        viewModelFactory = FavoritesViewModelFactory(stationRepository, application)
+        viewModel = ViewModelProvider(this, viewModelFactory)[FavoritesViewModel::class.java]
 
-        val stationListAdapter = StationListAdapter(
-            StationListClickListener { station -> viewModel.onStationListItemClicked(station) },
-            StationListLongClickListener { station -> viewModel.onStationListItemClicked(station) }
-        )
+        val bottomSpaceHeight = resources.getDimensionPixelSize(R.dimen.list_end_padding)
+        val dividerHeight = resources.getDimensionPixelSize(R.dimen.list_divider_height)
+        binding.favoritesList.addItemDecoration(RecyclerViewDecorator(bottomSpaceHeight, dividerHeight))
 
-        binding.favoritesList.adapter = stationListAdapter
-        viewModel.stationList.observe(viewLifecycleOwner) { stationList ->
-            stationList?.let {
-                stationListAdapter.submitList(stationList)
+        val favoritesListAdapter = context?.let {
+            FavoritesListAdapter(
+                it,
+                FavoritesListClickListener { station -> sharedMiniPlayerViewModel.startPlayer(station) },
+                FavoritesListLongClickListener { /*TODO A DIALOG OR SOMETHING*/ }
+            )
+        }
+
+        binding.favoritesList.adapter = favoritesListAdapter
+        viewModel.favoritesList.observe(viewLifecycleOwner) { favoritesList ->
+            favoritesList?.let {
+                favoritesListAdapter?.submitList(favoritesList)
+                binding.favoritesList.invalidateItemDecorations()
             }
         }
-/*
-        viewModel.navigateToStationDetail.observe(viewLifecycleOwner) { station ->
-            station?.let {
-                this.findNavController().navigate(
-                    StationListFragmentDirections.actionStationListFragmentToStationDetailFragment(
-                        station
-                    )
-                )
-                viewModel.onStationDetailNavigated()
-            }
-        }
-*/
         return binding.root
     }
-/*
-    @Deprecated("Deprecated in Java")
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
 
-        return when (item.itemId) {
-            R.id.action_load_popular_stations -> {
-                true
-            }
-            R.id.action_load_top_rated_stations -> {
-                viewModel.addStation()
-                true
-            }
-            R.id.action_load_saved_stations -> {
-                viewModel.getSavedStations()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
+    override fun onResume() {
+        super.onResume()
+        viewModel.getSavedFavorites()
     }
- */
 }

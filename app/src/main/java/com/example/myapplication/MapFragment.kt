@@ -1,24 +1,26 @@
 package com.example.myapplication
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
-import com.example.myapplication.MediaPlayerService.Companion.startMediaService
+import com.caverock.androidsvg.BuildConfig
 import com.example.myapplication.databinding.FragmentMapBinding
 import com.example.myapplication.utils.Constants.ESRI_BASE_URL
 import com.example.myapplication.viewmodel.MapViewModel
 import com.example.myapplication.viewmodel.MapViewModelFactory
+import com.example.myapplication.viewmodel.SharedMiniPlayerViewModel
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase
 import org.osmdroid.util.GeoPoint
@@ -27,23 +29,23 @@ import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapController
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 
 /**
- * A simple [Fragment] subclass.
- * Use the [MapFragment.newInstance] factory method to
- * create an instance of this fragment.
+ * A fragment for displaying the map
  */
 class MapFragment : Fragment() {
 
     // OpenStreeMap
     lateinit var mapController: MapController
     private var _binding: FragmentMapBinding? = null
-    private val location = GeoPoint(65.5840799,22.1975568)
 
     private lateinit var viewModel: MapViewModel
     private lateinit var viewModelFactory: MapViewModelFactory
     private lateinit var mapView: MapView
+    private val sharedMiniPlayerViewModel: SharedMiniPlayerViewModel by activityViewModels()
     private val binding get() = _binding!!
 
     @SuppressLint("ClickableViewAccessibility")
@@ -54,48 +56,77 @@ class MapFragment : Fragment() {
     ): View {
         _binding = FragmentMapBinding.inflate(inflater, container, false)
 
-        // Connect view model
+        val appContainer = RadioApp.getAppContainer(requireContext())
+        val stationRepository = appContainer.stationRepository
         val application = requireNotNull(this.activity).application
-        viewModelFactory = MapViewModelFactory(application)
+
+        viewModelFactory = MapViewModelFactory(stationRepository, application)
         viewModel = ViewModelProvider(this, viewModelFactory)[MapViewModel::class.java]
 
-        mapView = binding.mapView
-
         // Setup the map view
-        Configuration.getInstance().load(context, PreferenceManager.getDefaultSharedPreferences(context))
-        Configuration.getInstance().userAgentValue = BuildConfig.APPLICATION_ID
-        binding.mapView.setMultiTouchControls(true)
-        binding.mapView.setBackgroundColor(Color.BLACK)
-        binding.mapView.controller.animateTo(location)
-        binding.mapView.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
-        binding.mapView.setUseDataConnection(true)
+        setupMap()
+        addMarkers()
 
-        binding.mapView.setOnTouchListener { v, event ->
+        binding.mapView.setOnTouchListener { _, event ->
             when (event.action) {
                 MotionEvent.ACTION_UP -> {
-                    val center = GeoPoint(
-                        mapView.boundingBox.centerLatitude,
-                        mapView.boundingBox.centerLongitude
-                    )
-                    val closest: Marker? = findClosestMarker(binding.mapView.overlays.filterIsInstance<Marker>(), center)
-                    binding.mapView.controller.animateTo(closest!!.position)
-                    startMediaService(application, closest.title)
+                    // Wait for map to be ready
+                    if (binding.mapView.overlays.size > 0) {
+                        val center = mapView.mapCenter
+                        val closest: Marker? = findClosestMarker(binding.mapView.overlays.filterIsInstance<Marker>(),
+                            center as GeoPoint
+                        )
+                        val radiusPx = binding.selector.width / 2L
+                        val projection = binding.mapView.projection
+                        val centerPixels = projection.toPixels(center, null)
+                        val closestPixels = projection.toPixels(closest!!.position, null)
+                        val distanceToCenter = sqrt(
+                            (closestPixels.x - centerPixels.x).toDouble().pow(2.0)
+                                    + (closestPixels.y - centerPixels.y).toDouble().pow(2.0)
+                        )
+                        if (distanceToCenter <= radiusPx) {
+                            binding.mapView.controller.animateTo(closest.position)
+                            viewModel.getStation(closest.title)
+                        }
+                    }
                 }
             }
             false
         }
 
+        // Handle miniplayer
+        viewModel.station.observe(viewLifecycleOwner) { station ->
+            sharedMiniPlayerViewModel.startPlayer(station)
+        }
+
+        return binding.root
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mapView.setLayerType(View.LAYER_TYPE_HARDWARE, null)
+    }
+
+    /**
+     * Adds the markers to the map
+     */
+    private fun addMarkers() {
         // Add markers
         viewModel.stationList.observe(viewLifecycleOwner) { stationList ->
+            val bitmap = generateCircle(5, Color.GREEN)
             stationList?.let {
-                val bitmap = generateCircle(10, Color.GREEN)
                 val markers = stationList
-                    // filter out elements with null geo_lat or geo_long
                     .filter { it.geo_lat != null && it.geo_long != null }
                     .map {
                         val marker = Marker(binding.mapView)
                         marker.position = GeoPoint(it.geo_lat!!, it.geo_long!!)
-                        marker.title = it.url
+                        if (it.stationUUID.isNotEmpty()) {
+                            marker.title = it.stationUUID
+                        }
                         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
                         marker.icon = bitmap
                         marker
@@ -106,11 +137,24 @@ class MapFragment : Fragment() {
                 binding.mapView.invalidate()
             }
         }
+    }
 
+    /**
+     * Setups the map view
+     */
+    private fun setupMap() {
+        mapView = binding.mapView
+        val sharedPreferences = context?.getSharedPreferences("map_prefs", Context.MODE_PRIVATE)
+        Configuration.getInstance().load(context, sharedPreferences)
+        Configuration.getInstance().userAgentValue = BuildConfig.APPLICATION_ID
+        binding.mapView.setMultiTouchControls(true)
+        binding.mapView.setBackgroundColor(Color.BLACK)
+        binding.mapView.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
+        binding.mapView.setUseDataConnection(true)
         // Disable repetition and set scrolling limits so that the map only tiles horizontally
         binding.mapView.isVerticalMapRepetitionEnabled = false
         binding.mapView.setScrollableAreaLimitLatitude(MapView.getTileSystem().maxLatitude,
-            MapView.getTileSystem().minLatitude, 0);
+            MapView.getTileSystem().minLatitude, 0)
 
         // Set reasonable levels of details for zoom in and out
         binding.mapView.minZoomLevel = 3.0
@@ -137,23 +181,12 @@ class MapFragment : Fragment() {
         })
 
         mapController = binding.mapView.controller as MapController
-        mapController.setCenter(location)
-
-        return binding.root
-    }
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    override fun onResume() {
-        super.onResume()
-        mapView.setLayerType(View.LAYER_TYPE_HARDWARE, null)
     }
 
     /*
      * Generates a drawable circle bitmap
      */
+    @Suppress("SameParameterValue")
     private fun generateCircle(diameter: Int, color: Int): BitmapDrawable {
 
         val circleBMP = Bitmap.createBitmap(diameter, diameter, Bitmap.Config.ARGB_8888)
