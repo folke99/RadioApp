@@ -6,6 +6,7 @@
     <string name="title_search">Sök</string>
     <string name="title_favorites">Favoriter</string>
     <string name="title_recordings">Inspelningar</string>
+    <string name="title_settings">Inställningar</string>
     <string name="play_button">Spela</string>
     <string name="favorite_button">Favoriter</string>
     <string name="channel_image">Stationens bild</string>

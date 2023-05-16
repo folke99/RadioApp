@@ -1,5 +1,6 @@
 package com.example.myapplication.utils
 
+import android.annotation.SuppressLint
 import android.graphics.drawable.PictureDrawable
 import android.widget.ImageView
 import android.widget.TextView
@@ -59,6 +60,23 @@ fun bindStationImage(imgView: ImageView, imgUrl: String?) {
         }
     }
 }
+
+@SuppressLint("DiscouragedApi")
+@BindingAdapter("settingImage")
+fun bindSettingImage(imgView: ImageView, resourceName: String?) {
+    val resourceId = when {
+        !resourceName.isNullOrEmpty() -> {
+            val resources = imgView.context.resources
+            resources.getIdentifier(resourceName, "drawable", imgView.context.packageName)
+        }
+        else -> R.drawable.ic_no_image_128
+    }
+    Glide.with(imgView)
+        .load(resourceId)
+        .transform(FitCenter())
+        .into(imgView)
+}
+
 
 @BindingAdapter("countryCode")
 fun bindCountryCode(textView: TextView, countryCode: String) {
