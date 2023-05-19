@@ -7,8 +7,10 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 
     <application
+        android:enableOnBackInvokedCallback="true"
         android:name=".RadioApp"
         android:usesCleartextTraffic="true"
         android:allowBackup="true"
