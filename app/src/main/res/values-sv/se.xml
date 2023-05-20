@@ -7,7 +7,12 @@
     <string name="title_favorites">Favoriter</string>
     <string name="title_recordings">Inspelningar</string>
     <string name="title_settings">Inställningar</string>
+    <string name="title_station_details">Om station</string>
+    <string name="title_vote">Rösta</string>
     <string name="play_button">Spela</string>
+    <string name="button_vote">Rösta</string>
+    <string name="button_back">Tillbaka</string>
+    <string name="button_cancel">Avbryt</string>
     <string name="favorite_button">Favoriter</string>
     <string name="channel_image">Stationens bild</string>
     <string name="channel_name">Stationens namn</string>
@@ -21,5 +26,6 @@
     <string name="selector">Välj station</string>
     <string name="channel_description">TEST</string>
     <string name="search_for_channels">Sök efter kanaler!</string>
+    <string name="comment">kommentar:</string>
 
 </resources>

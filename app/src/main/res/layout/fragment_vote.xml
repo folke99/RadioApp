@@ -21,62 +21,79 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/station_vote"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-        android:onClickListener="@{ (view) -> clickListener.onClick(station) }"
-        android:onLongClickListener="@{ (view) -> true }">
+        android:layout_height="match_parent"
+        android:layout_margin="4dp">
 
-        <TextView
+        <EditText
             android:id="@+id/review_name_input"
             android:layout_width="0dp"
-            android:layout_height="20dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:gravity="start"
             android:text="name:"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <EditText
             android:id="@+id/review_score_input"
             android:layout_width="0dp"
-            android:layout_height="20dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:gravity="start"
             android:text="score:"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/review_name_input" />
 
-        <TextView
-            android:id="@+id/review_input"
+        <EditText
+            android:id="@+id/review_comment_input"
             android:layout_width="0dp"
-            android:layout_height="150dp"
-            android:text="content:"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:gravity="start"
+            android:text="TextView"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/review_score_input" />
+
+        <EditText
+            android:id="@+id/review_input"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="start"
+            android:text="content:"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/cancel_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/review_comment_input" />
 
         <Button
             android:id="@+id/post_button"
             android:layout_width="120dp"
             android:layout_height="55dp"
             android:layout_marginStart="48dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="16dp"
             android:text="Post Vote"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/review_input" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/cancel_button"
             android:layout_width="120dp"
             android:layout_height="55dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="48dp"
-            android:layout_marginBottom="8dp"
-            android:text="Button"
+            android:layout_marginBottom="16dp"
+            android:text="@string/button_cancel"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/review_input" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

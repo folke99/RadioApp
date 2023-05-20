@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         android:onClickListener="@{ (view) -> clickListener.onClick(station) }"
-        android:onLongClickListener="@{ (view) -> true }">
+        android:onLongClickListener="@{ (view) -> longClickListener.onLongClick(station)}">
 
         <ImageView
             android:id="@+id/station_image"

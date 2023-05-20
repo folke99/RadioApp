@@ -8,6 +8,7 @@ import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.myapplication.adapter.SearchListAdapter
 import com.example.myapplication.adapter.SearchListClickListener
 import com.example.myapplication.adapter.SearchListLongClickListener
@@ -16,7 +17,6 @@ import com.example.myapplication.utils.RecyclerViewDecorator
 import com.example.myapplication.viewmodel.SearchViewModel
 import com.example.myapplication.viewmodel.SearchViewModelFactory
 import com.example.myapplication.viewmodel.SharedMiniPlayerViewModel
-import com.example.myapplication.viewmodel.SharedMiniPlayerViewModelFactory
 
 
 class SearchFragment : Fragment() {
@@ -57,7 +57,11 @@ class SearchFragment : Fragment() {
                     },
 
                 SearchListLongClickListener { station ->
-                    viewModel.onSearchListItemClicked(station)
+                    val action = SearchFragmentDirections
+                        .actionNavigationSearchToNavigationStationDetails(station)
+
+                    findNavController().navigate(action)
+                    true
                 }
             )
         }
