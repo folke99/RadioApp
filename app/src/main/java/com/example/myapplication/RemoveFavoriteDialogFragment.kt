@@ -11,8 +11,8 @@ class RemoveFavoriteDialogFragment : DialogFragment() {
         return activity?.let {
             // Use the Builder class for convenient dialog construction
             val builder = AlertDialog.Builder(it)
-            builder.setMessage(R.string.remove)
-                .setPositiveButton(R.string.remove,
+            builder.setMessage(R.string.button_remove)
+                .setPositiveButton(R.string.button_remove,
                     DialogInterface.OnClickListener { dialog, id ->
                         // Remove channel
                     })

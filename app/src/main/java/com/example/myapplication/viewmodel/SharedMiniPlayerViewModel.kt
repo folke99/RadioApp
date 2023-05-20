@@ -75,4 +75,12 @@ class SharedMiniPlayerViewModel(
     fun startRecording(station: Station) {
         _isRecording.value = true
     }
+
+    fun setVisible() {
+        _isEnabled.value = true
+    }
+
+    fun setInvisible() {
+        _isEnabled.value = false
+    }
 }

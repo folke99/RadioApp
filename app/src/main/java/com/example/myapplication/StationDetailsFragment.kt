@@ -54,6 +54,12 @@ class StationDetailsFragment : Fragment() {
             findNavController().navigate(action)
         }
 
+        binding.backButton.setOnClickListener {
+            val action = StationDetailsFragmentDirections
+                .actionNavigationStationDetailsToNavigationSearch()
+            findNavController().navigate(action)
+        }
+
         binding.station = station
 
         return binding.root
@@ -71,7 +77,7 @@ class StationDetailsFragment : Fragment() {
         binding.mapView.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
         binding.mapView.setUseDataConnection(true)
 
-        binding.mapView.minZoomLevel = 15.0
+        binding.mapView.minZoomLevel = 6.0
         binding.mapView.maxZoomLevel = 15.0
 
         // Setup Esri tile source (for getting the images for the map), needs a custom tile source

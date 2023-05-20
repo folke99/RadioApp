@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.myapplication.databinding.FragmentVoteBinding
 import com.example.myapplication.model.Station
 import com.example.myapplication.model.Vote
@@ -49,16 +50,20 @@ class VoteFragment : Fragment() {
                     Vote(
                         station.stationUUID,
                         binding.reviewScoreInput.text[0].code,
-                        binding.reviewNameInput.text as String,
-                        binding.reviewCommentInput.text as String
+                        binding.reviewNameInput.text.toString(),
+                        binding.reviewCommentInput.text.toString()
                     )
                 )
             }
         }
 
         binding.cancelButton.setOnClickListener {
-
+            val action =
+                VoteFragmentDirections.actionNavigationVoteToNavigationStationDetails(station)
+            findNavController().navigate(action)
         }
+
+        binding.station = station
 
         return binding.root
     }

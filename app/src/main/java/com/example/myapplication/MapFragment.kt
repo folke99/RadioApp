@@ -85,6 +85,9 @@ class MapFragment : Fragment() {
                                     + (closestPixels.y - centerPixels.y).toDouble().pow(2.0)
                         )
                         if (distanceToCenter <= radiusPx) {
+                            if (binding.mapView.zoomLevelDouble <= 10) {
+                                binding.mapView.controller.zoomTo(10, 1500)
+                            }
                             binding.mapView.controller.animateTo(closest.position)
                             viewModel.getStation(closest.title)
                         }

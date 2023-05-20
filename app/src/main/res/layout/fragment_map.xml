@@ -26,7 +26,7 @@
         android:layout_height="80dp"
         android:layout_marginBottom="3dp"
         android:background="@drawable/ic_selector_80"
-        android:contentDescription="@string/selector"
+        android:contentDescription="@string/description_selector"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

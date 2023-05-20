@@ -54,9 +54,11 @@ class SearchFragment : Fragment() {
 
                     // Play channel
                     sharedMiniPlayerViewModel.startPlayer(station)
+                    sharedMiniPlayerViewModel.setVisible()
                     },
 
                 SearchListLongClickListener { station ->
+                    sharedMiniPlayerViewModel.setInvisible()
                     val action = SearchFragmentDirections
                         .actionNavigationSearchToNavigationStationDetails(station)
 
@@ -64,6 +66,10 @@ class SearchFragment : Fragment() {
                     true
                 }
             )
+        }
+
+        if (sharedMiniPlayerViewModel.isPlaying.value == true) {
+            sharedMiniPlayerViewModel.setVisible()
         }
 
         val bottomSpaceHeight = resources.getDimensionPixelSize(R.dimen.list_end_padding)
