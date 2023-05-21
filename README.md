@@ -10,6 +10,8 @@ The app uses the following APIs:
 
 [ArcGIS World Imagery API](https://server.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer)
 
+[Advice Slip API](https://api.adviceslip.com/)
+
 ## Library dependencies
 
 The app uses the following libraries:
