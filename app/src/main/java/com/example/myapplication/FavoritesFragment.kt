@@ -7,11 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.myapplication.adapter.FavoritesListAdapter
 import com.example.myapplication.adapter.FavoritesListClickListener
 import com.example.myapplication.adapter.FavoritesListLongClickListener
+import com.example.myapplication.adapter.SearchListLongClickListener
 import com.example.myapplication.databinding.FragmentFavoritesBinding
-import com.example.myapplication.utils.RecyclerViewDecorator
+import com.example.myapplication.util.RecyclerViewDecorator
 import com.example.myapplication.viewmodel.FavoritesViewModel
 import com.example.myapplication.viewmodel.FavoritesViewModelFactory
 import com.example.myapplication.viewmodel.SharedMiniPlayerViewModel
@@ -51,7 +53,14 @@ class FavoritesFragment : Fragment() {
             FavoritesListAdapter(
                 it,
                 FavoritesListClickListener { station -> sharedMiniPlayerViewModel.startPlayer(station) },
-                FavoritesListLongClickListener { /*TODO A DIALOG OR SOMETHING*/ }
+                FavoritesListLongClickListener { station ->
+                    sharedMiniPlayerViewModel.setInvisible()
+                    val action = SearchFragmentDirections
+                        .actionNavigationSearchToNavigationStationDetails(station)
+
+                    findNavController().navigate(action)
+                    true
+                }
             )
         }
 

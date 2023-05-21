@@ -1,4 +1,4 @@
-package com.example.myapplication.utils
+package com.example.myapplication.util
 
 import android.annotation.SuppressLint
 import android.graphics.drawable.PictureDrawable
@@ -87,4 +87,14 @@ fun bindCountryCode(textView: TextView, countryCode: String) {
         "WW"
     }
     textView.text = country
+}
+
+@BindingAdapter("recordingLength")
+fun bindRecordingLength(textView: TextView, length: Long) {
+    val hours = length / 3600
+    val minutes = (length % 3600) / 60
+    val seconds = length % 60
+
+    val formattedTime = String.format("%02d:%02d:%02d", hours, minutes, seconds)
+    textView.text = formattedTime
 }

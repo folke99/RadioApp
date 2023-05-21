@@ -13,7 +13,7 @@ import com.example.myapplication.adapter.SearchListAdapter
 import com.example.myapplication.adapter.SearchListClickListener
 import com.example.myapplication.adapter.SearchListLongClickListener
 import com.example.myapplication.databinding.FragmentSearchBinding
-import com.example.myapplication.utils.RecyclerViewDecorator
+import com.example.myapplication.util.RecyclerViewDecorator
 import com.example.myapplication.viewmodel.SearchViewModel
 import com.example.myapplication.viewmodel.SearchViewModelFactory
 import com.example.myapplication.viewmodel.SharedMiniPlayerViewModel

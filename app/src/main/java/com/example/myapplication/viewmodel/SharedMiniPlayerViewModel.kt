@@ -5,10 +5,12 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.myapplication.services.MediaPlayerService.Companion.startMediaService
-import com.example.myapplication.services.MediaPlayerService.Companion.stopMediaService
 import com.example.myapplication.data.StationRepository
 import com.example.myapplication.model.Station
+import com.example.myapplication.service.MediaPlayerService.Companion.startMediaService
+import com.example.myapplication.service.MediaPlayerService.Companion.stopMediaService
+import com.example.myapplication.service.MediaRecorderService.Companion.startMediaRecorderService
+import com.example.myapplication.service.MediaRecorderService.Companion.stopMediaRecorderService
 import kotlinx.coroutines.launch
 
 
@@ -69,10 +71,12 @@ class SharedMiniPlayerViewModel(
     }
 
     fun stopRecording() {
+        stopMediaRecorderService(application)
         _isRecording.value = false
     }
 
     fun startRecording(station: Station) {
+        startMediaRecorderService(application)
         _isRecording.value = true
     }
 

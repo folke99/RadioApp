@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.adapter.SettingsListAdapter
 import com.example.myapplication.adapter.SettingsListClickListener
 import com.example.myapplication.databinding.FragmentSettingsBinding
-import com.example.myapplication.utils.RecyclerViewDecorator
+import com.example.myapplication.util.RecyclerViewDecorator
 import com.example.myapplication.viewmodel.SettingsViewModel
 import com.example.myapplication.viewmodel.SettingsViewModelFactory
 import com.example.myapplication.viewmodel.SharedMiniPlayerViewModel

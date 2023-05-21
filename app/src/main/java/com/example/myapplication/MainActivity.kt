@@ -1,15 +1,21 @@
 package com.example.myapplication
 
+import android.Manifest
+import android.app.Activity
+import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.myapplication.databinding.ActivityMainBinding
+import com.example.myapplication.util.Constants
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
@@ -34,6 +40,20 @@ class MainActivity : AppCompatActivity() {
             R.id.navigation_map, R.id.navigation_search, R.id.navigation_favorites))
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        // Get permissions
+        if (ActivityCompat.checkSelfPermission(
+                this as Context,
+                Manifest.permission.RECORD_AUDIO
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this as Activity,
+                arrayOf(Manifest.permission.RECORD_AUDIO),
+                Constants.RECORD_AUDIO_PERMISSION_REQUEST_CODE
+            )
+            return
+        }
 
         // Setup the miniplayer
         val miniPlayerFragment = MiniPlayerFragment()

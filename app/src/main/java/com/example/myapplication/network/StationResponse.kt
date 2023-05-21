@@ -1,4 +1,4 @@
-package com.ltu.m7019e.v23.themoviedb.network
+package com.example.myapplication.network
 
 import com.example.myapplication.model.Station
 import com.squareup.moshi.Json

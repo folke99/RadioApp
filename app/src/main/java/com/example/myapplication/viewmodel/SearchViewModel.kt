@@ -5,11 +5,11 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.myapplication.services.MediaPlayerService.Companion.startMediaService
 import com.example.myapplication.data.StationRepository
 import com.example.myapplication.model.Click
 import com.example.myapplication.model.Station
 import com.example.myapplication.network.DataFetchStatus
+import com.example.myapplication.service.MediaPlayerService.Companion.startMediaService
 import kotlinx.coroutines.launch
 
 class SearchViewModel(

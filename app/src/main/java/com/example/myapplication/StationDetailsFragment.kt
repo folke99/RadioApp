@@ -6,13 +6,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.caverock.androidsvg.BuildConfig
 import com.example.myapplication.databinding.FragmentStationDetailBinding
 import com.example.myapplication.model.Station
-import com.example.myapplication.utils.Constants
+import com.example.myapplication.util.Constants
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase
 import org.osmdroid.util.GeoPoint

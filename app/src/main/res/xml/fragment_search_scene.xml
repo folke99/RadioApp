@@ -14,12 +14,7 @@
 
     <ConstraintSet android:id="@+id/start">
         <Constraint android:id="@+id/searchView">
-            <CustomAttribute
-                motion:attributeName="layout_height"
-                motion:customDimension="60dp" />
-            <CustomAttribute
-                motion:attributeName="alpha"
-                motion:customFloatValue="1.0" />
+            <CustomAttribute motion:attributeName="alpha" motion:customFloatValue="1.0" />
         </Constraint>
     </ConstraintSet>
 
@@ -29,9 +24,7 @@
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
             android:layout_width="match_parent">
-            <CustomAttribute
-                motion:attributeName="alpha"
-                motion:customFloatValue="0.0" />
+            <CustomAttribute motion:attributeName="alpha" motion:customFloatValue="0.0" />
         </Constraint>
     </ConstraintSet>
 

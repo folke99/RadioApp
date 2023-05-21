@@ -5,7 +5,7 @@ import com.example.myapplication.database.StationDatabase
 import com.example.myapplication.database.StationDatabaseDao
 import com.example.myapplication.network.RadioBrowserApiService
 import com.example.myapplication.network.getLoggerIntercepter
-import com.example.myapplication.utils.Constants
+import com.example.myapplication.util.Constants
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
