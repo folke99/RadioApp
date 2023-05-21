@@ -1,5 +1,6 @@
 package com.example.myapplication.network
 
+import com.example.myapplication.model.AdviceSlip
 import com.example.myapplication.model.Click
 import com.example.myapplication.model.Station
 import com.example.myapplication.model.Vote
@@ -62,5 +63,9 @@ interface RadioBrowserApiService {
         @Path("id") id: String,
         @Body vote: Vote
     ): Response<Unit>
+}
 
+interface AdviceSlipApiService {
+    @GET("advice")
+    suspend fun getAdviceSlip(): AdviceSlip
 }

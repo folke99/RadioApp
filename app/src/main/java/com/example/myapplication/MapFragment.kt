@@ -17,7 +17,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.caverock.androidsvg.BuildConfig
 import com.example.myapplication.databinding.FragmentMapBinding
-import com.example.myapplication.util.Constants.ESRI_BASE_URL
+import com.example.myapplication.util.Constants.ESRI_API_BASE_URL
 import com.example.myapplication.viewmodel.MapViewModel
 import com.example.myapplication.viewmodel.MapViewModelFactory
 import com.example.myapplication.viewmodel.SharedMiniPlayerViewModel
@@ -102,6 +102,13 @@ class MapFragment : Fragment() {
             sharedMiniPlayerViewModel.startPlayer(station)
         }
 
+        // Handle advice
+        viewModel.advice.observe(viewLifecycleOwner) { advice ->
+            binding.adviceView.text = advice
+        }
+
+        viewModel.getAdvice()
+
         return binding.root
     }
     override fun onDestroyView() {
@@ -171,7 +178,7 @@ class MapFragment : Fragment() {
             15,
             256,
             "",
-            arrayOf(ESRI_BASE_URL),
+            arrayOf(ESRI_API_BASE_URL),
             "Esri"
         ) {
             override fun getTileURLString(pMapTileIndex: Long): String {

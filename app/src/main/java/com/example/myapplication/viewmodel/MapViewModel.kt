@@ -32,6 +32,12 @@ class MapViewModel(
             return _station
         }
 
+    private val _advice = MutableLiveData<String>()
+    val advice: LiveData<String>
+        get() {
+            return _advice
+        }
+
     init {
         getTopStations()
         _dataFetchStatus.value = DataFetchStatus.LOADING
@@ -59,7 +65,19 @@ class MapViewModel(
         viewModelScope.launch {
             try {
                 _station.value = stationRepository.getStation(stationUUID)[0]
-                println(station)
+            } catch (e: java.lang.Exception) {
+                //TODO Do something here
+            }
+        }
+    }
+
+    /**
+     * Gets a random advice
+     */
+    fun getAdvice() {
+        viewModelScope.launch {
+            try {
+                _advice.value = stationRepository.getAdvice()
             } catch (e: java.lang.Exception) {
                 //TODO Do something here
             }

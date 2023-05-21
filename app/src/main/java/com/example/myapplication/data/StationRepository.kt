@@ -5,6 +5,7 @@ import com.example.myapplication.model.Click
 import com.example.myapplication.model.Station
 import com.example.myapplication.model.StationAttributes
 import com.example.myapplication.model.Vote
+import com.example.myapplication.network.AdviceSlipApiService
 import com.example.myapplication.network.RadioBrowserApiService
 import timber.log.Timber
 
@@ -21,9 +22,15 @@ interface StationRepository {
     suspend fun postVote(vote: Vote)
     suspend fun postClick(click: Click)
 
+    suspend fun getAdvice(): String
+
 }
 
-class DefaultStationRepository(private val stationDatabaseDao: StationDatabaseDao, private val radioBrowserApiService: RadioBrowserApiService) : StationRepository {
+class DefaultStationRepository(
+    private val stationDatabaseDao: StationDatabaseDao,
+    private val radioBrowserApiService: RadioBrowserApiService,
+    private val adviceSlipApiService: AdviceSlipApiService
+    ) : StationRepository {
 
 
     /**
@@ -122,6 +129,13 @@ class DefaultStationRepository(private val stationDatabaseDao: StationDatabaseDa
      */
     override suspend fun postClick(click: Click) {
         radioBrowserApiService.postClick(click.id, click)
+    }
+
+    /**
+     * Gets a random advice
+     */
+    override suspend fun getAdvice(): String {
+        return adviceSlipApiService.getAdviceSlip().slip.advice
     }
 
 }

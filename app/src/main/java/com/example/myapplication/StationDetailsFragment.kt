@@ -87,7 +87,7 @@ class StationDetailsFragment : Fragment() {
             15,
             256,
             "",
-            arrayOf(Constants.ESRI_BASE_URL),
+            arrayOf(Constants.ESRI_API_BASE_URL),
             "Esri"
         ) {
             override fun getTileURLString(pMapTileIndex: Long): String {
