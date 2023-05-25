@@ -34,14 +34,14 @@ class DefaultStationRepository(
 
 
     /**
-     * Gets the station by UUID
+     * Gets the station by UUID from the Radio Browser API
      */
     override suspend fun getStation(stationUUID: String): List<Station> {
         return radioBrowserApiService.getStationByUUID(stationUUID)
     }
 
     /**
-     * Get the top voted stations
+     * Get the top voted stations from the Radio Browser API
      */
     override suspend fun getTopVoted(): List<Station> {
         try {
@@ -54,7 +54,7 @@ class DefaultStationRepository(
     }
 
     /**
-     * Get the top clicked stations
+     * Get the top clicked stations from the Radio Browser API
      */
     override suspend fun getTopClicked(): List<Station> {
         try {
@@ -66,14 +66,14 @@ class DefaultStationRepository(
     }
 
     /**
-     * Gets favorite stations
+     * Gets favorite stations from local database
      */
     override suspend fun getFavorites(): List<Station> {
         return stationDatabaseDao.getFavoriteStations()
     }
 
     /**
-     * Search a station by it's name
+     * Search a RadioBrowser API station by it's name
      */
     override suspend fun searchStationByName(name: String): List<Station> {
         try {
@@ -85,7 +85,7 @@ class DefaultStationRepository(
     }
 
     /**
-     * Remove a station
+     * Remove a station from the local database
      */
     override suspend fun deleteStations(stations: List<Station>) {
         stationDatabaseDao.deleteStations(stations)
@@ -111,7 +111,7 @@ class DefaultStationRepository(
     }
 
     /**
-     * Checks if a station is set as favorite
+     * Checks if a RadioBrowser API station is set as favorite
      */
     override suspend fun isFavorite(stationUUID: String): Boolean {
         return stationDatabaseDao.isFavorite(stationUUID)
@@ -125,14 +125,14 @@ class DefaultStationRepository(
     }
 
     /**
-     * Posts a click on a station
+     * Posts a click on a RadioBrowser API station
      */
     override suspend fun postClick(click: Click) {
         radioBrowserApiService.postClick(click.id, click)
     }
 
     /**
-     * Gets a random advice
+     * Gets a random advice from the AdviceSlip API
      */
     override suspend fun getAdvice(): String {
         return adviceSlipApiService.getAdviceSlip().slip.advice

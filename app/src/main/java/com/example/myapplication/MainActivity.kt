@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations
         val appBarConfiguration = AppBarConfiguration(setOf(
-            R.id.navigation_map, R.id.navigation_search, R.id.navigation_favorites))
+            R.id.navigation_map, R.id.navigation_search, R.id.navigation_favorites, R.id.navigation_recordings))
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        // Setup the miniplayer
+        // Setup the miniplayer here to have it accessible from all fragments
         val miniPlayerFragment = MiniPlayerFragment()
         supportFragmentManager.beginTransaction()
             .add(R.id.container_miniplayer, miniPlayerFragment, "fragment_miniplayer")

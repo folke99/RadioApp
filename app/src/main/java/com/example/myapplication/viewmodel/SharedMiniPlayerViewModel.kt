@@ -41,6 +41,9 @@ class SharedMiniPlayerViewModel(
     val isEnabled: LiveData<Boolean>
         get() = _isEnabled
 
+    /**
+     * Saves a station to the local database
+     */
     fun saveStation(station: Station) {
         viewModelScope.launch {
             stationRepository.insertStations(listOf(station))
@@ -48,6 +51,9 @@ class SharedMiniPlayerViewModel(
         _isFavorite.value = true
     }
 
+    /**
+     * Deletes a station from the local database
+     */
     fun deleteStation(station: Station) {
         viewModelScope.launch {
             stationRepository.deleteStations(listOf(station))
@@ -55,11 +61,17 @@ class SharedMiniPlayerViewModel(
         _isFavorite.value = false
     }
 
+    /**
+     * Stops the media player service
+     */
     fun stopPlayer() {
         _isPlaying.value = false
         stopMediaService(application)
     }
 
+    /**
+     * Starts the media player service and plays the station
+     */
     fun startPlayer(station: Station) {
         _station.value = listOf(station)
         _isPlaying.value = true
@@ -75,15 +87,22 @@ class SharedMiniPlayerViewModel(
         _isRecording.value = false
     }
 
-    fun startRecording(station: Station) {
+
+    fun startRecording() {
         startMediaRecorderService(application)
         _isRecording.value = true
     }
 
+    /**
+     * Show the mini player
+     */
     fun setVisible() {
         _isEnabled.value = true
     }
 
+    /**
+     * Hide the mini player
+     */
     fun setInvisible() {
         _isEnabled.value = false
     }

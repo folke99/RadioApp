@@ -24,7 +24,6 @@ class RecordingsViewModel(application: Application):
      * Gets the recordings
      */
     fun getRecordings() {
-        println("GETTING RECORDINGS")
         viewModelScope.launch {
             val recordings = mutableListOf<Recording>()
 
@@ -33,23 +32,21 @@ class RecordingsViewModel(application: Application):
             if (directory.exists() && directory.isDirectory) {
                 val files = directory.listFiles()
                 files?.forEach { file ->
-                    println("HEJ")
                     val filename = file.name
                     val filePath = file.absolutePath
                     val clipLength: Long = getClipLengthFromFile(file)
-
                     val recording = Recording(filename, filePath, clipLength)
                     recordings.add(recording)
                 }
             }
 
-            println("SIZE OF LIST:")
-            println(recordings.size)
-
             _recordingsList.value = recordings
         }
     }
 
+    /**
+     * Get the length of a recorded clip
+     */
     private fun getClipLengthFromFile(file: File): Long {
         try {
             val retriever = MediaMetadataRetriever()

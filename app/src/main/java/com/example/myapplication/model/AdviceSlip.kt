@@ -2,6 +2,9 @@ package com.example.myapplication.model
 
 import com.squareup.moshi.Json
 
+/**
+ * Response data model for the Advice Slip API
+ */
 data class AdviceSlip(
 
     @Json(name = "slip")

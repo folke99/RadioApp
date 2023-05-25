@@ -56,6 +56,7 @@ class RecordingsFragment : Fragment() {
                 RecordingsListClickListener { recording ->
                     val file = File(recording.path)
                     val fileUri = Uri.fromFile(file)
+                    // Play recording
                     sharedMiniPlayerViewModel.startPlayer(
                         Station(
                             name = recording.name,
@@ -71,9 +72,12 @@ class RecordingsFragment : Fragment() {
             recordingsListAdapter?.submitList(recordingsList)
         }
 
+        // Setup offset at the bottom of the list to let all list items be visible
         val bottomSpaceHeight = resources.getDimensionPixelSize(R.dimen.list_end_padding)
         val dividerHeight = resources.getDimensionPixelSize(R.dimen.list_divider_height)
-        binding.recordingsList.addItemDecoration(RecyclerViewDecorator(bottomSpaceHeight, dividerHeight))
+        binding.recordingsList.addItemDecoration(
+            RecyclerViewDecorator(bottomSpaceHeight, dividerHeight)
+        )
 
         viewModel.getRecordings()
 

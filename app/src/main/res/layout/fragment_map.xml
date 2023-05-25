@@ -39,18 +39,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/adviceView" />
 
-    <ImageView
-        android:id="@+id/selector"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginBottom="3dp"
-        android:background="@drawable/ic_selector_80"
-        android:contentDescription="@string/description_selector"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@tools:sample/avatars" />
+        <ImageView
+            android:id="@+id/selector"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginBottom="3dp"
+            android:background="@drawable/ic_selector_80"
+            android:contentDescription="@string/description_selector"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/adviceView"
+            tools:src="@tools:sample/avatars" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

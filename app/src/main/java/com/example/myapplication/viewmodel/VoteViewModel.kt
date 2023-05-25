@@ -22,7 +22,7 @@ class VoteViewModel(
         }
 
     /**
-     * Gets the top stations
+     * Posts a vote on a station
      */
     fun postVote(vote: Vote) {
         viewModelScope.launch {

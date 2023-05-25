@@ -12,13 +12,7 @@ import com.example.myapplication.network.DataFetchStatus
 
 class MapViewModel(
     private val stationRepository: StationRepository,
-    private val application: Application) : AndroidViewModel(application) {
-
-    private val _dataFetchStatus = MutableLiveData<DataFetchStatus>()
-    val dataFetchStatus: LiveData<DataFetchStatus>
-        get() {
-            return _dataFetchStatus
-        }
+    application: Application) : AndroidViewModel(application) {
 
     private val _stationList = MutableLiveData<List<Station>>()
     val stationList: LiveData<List<Station>>
@@ -40,7 +34,6 @@ class MapViewModel(
 
     init {
         getTopStations()
-        _dataFetchStatus.value = DataFetchStatus.LOADING
     }
 
     /**
@@ -50,9 +43,7 @@ class MapViewModel(
         viewModelScope.launch {
             try {
                 _stationList.value = stationRepository.getTopVoted()
-                _dataFetchStatus.value = DataFetchStatus.DONE
             } catch (e: Exception) {
-                _dataFetchStatus.value = DataFetchStatus.ERROR
                 _stationList.value = arrayListOf()
             }
         }

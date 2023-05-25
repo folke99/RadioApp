@@ -23,6 +23,9 @@ class FavoritesViewModel(
         getSavedFavorites()
     }
 
+    /**
+     * Get all saved favorite stations
+     */
     fun getSavedFavorites() {
         viewModelScope.launch {
             _favoritesList.value = stationRepository.getFavorites()

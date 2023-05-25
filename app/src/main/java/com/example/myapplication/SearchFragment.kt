@@ -72,6 +72,7 @@ class SearchFragment : Fragment() {
             sharedMiniPlayerViewModel.setVisible()
         }
 
+        // Setup offset at the end of the list
         val bottomSpaceHeight = resources.getDimensionPixelSize(R.dimen.list_end_padding)
         val dividerHeight = resources.getDimensionPixelSize(R.dimen.list_divider_height)
         binding.searchList.addItemDecoration(RecyclerViewDecorator(bottomSpaceHeight, dividerHeight))
@@ -84,6 +85,7 @@ class SearchFragment : Fragment() {
             }
         }
 
+        // Lets the user search for stations
         val searchView = binding.searchView
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -92,6 +94,7 @@ class SearchFragment : Fragment() {
                 }
                 return true
             }
+            // Only search when text is submitted, not as soon as it's typed
             override fun onQueryTextChange(newText: String?): Boolean { return true }
         })
 

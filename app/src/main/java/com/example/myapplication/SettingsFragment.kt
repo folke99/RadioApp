@@ -24,7 +24,6 @@ class SettingsFragment : Fragment() {
 
     private lateinit var viewModel: SettingsViewModel
     private lateinit var viewModelFactory: SettingsViewModelFactory
-    private val sharedMiniPlayerViewModel: SharedMiniPlayerViewModel by activityViewModels()
 
     private val binding get() = _binding!!
 
@@ -35,9 +34,6 @@ class SettingsFragment : Fragment() {
     ): View {
 
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
-
-        val appContainer = RadioApp.getAppContainer(requireContext())
-        val stationRepository = appContainer.stationRepository
         val application = requireNotNull(this.activity).application
 
         viewModelFactory = SettingsViewModelFactory(application)
@@ -67,7 +63,8 @@ class SettingsFragment : Fragment() {
         viewModel.settingsEvent.observe(viewLifecycleOwner) {
             when (it) {
                 "Equalizer" -> openEqualizer()
-                /* TODO should restrict number of channels to fetch when loading the map */
+                /* TODO should restrict number of channels to fetch when loading the map,
+                    placeholder for now */
                 "Station count limit" -> true //setStationCountLimit()
             }
         }

@@ -20,6 +20,10 @@ import java.io.IOException
 import java.lang.Exception
 import java.util.Locale
 
+/**
+ * Fetch station images, handles the normal raster formats such as jpg and png as well as svg
+ * vector formats that aren't too complicated, or else it just loads a place holder image
+ */
 @BindingAdapter("stationImageUrl")
 fun bindStationImage(imgView: ImageView, imgUrl: String?) {
     if (imgUrl.isNullOrEmpty()) {
@@ -61,6 +65,9 @@ fun bindStationImage(imgView: ImageView, imgUrl: String?) {
     }
 }
 
+/**
+ * Bind image to the settings list image view
+ */
 @SuppressLint("DiscouragedApi")
 @BindingAdapter("settingImage")
 fun bindSettingImage(imgView: ImageView, resourceName: String?) {
@@ -77,18 +84,24 @@ fun bindSettingImage(imgView: ImageView, resourceName: String?) {
         .into(imgView)
 }
 
-
+/**
+ * Convert country code to country name to keep the text view locale aware
+ */
 @BindingAdapter("countryCode")
 fun bindCountryCode(textView: TextView, countryCode: String) {
     val locale = Locale.getDefault()
     val country = try {
         Locale("", countryCode).getDisplayCountry(locale)
     } catch (e: Exception) {
+        // World Wide placeholder
         "WW"
     }
     textView.text = country
 }
 
+/**
+ * Display length of recording in a human readable time format of hh:mm:ss
+ */
 @BindingAdapter("recordingLength")
 fun bindRecordingLength(textView: TextView, length: Long) {
     val hours = length / 3600

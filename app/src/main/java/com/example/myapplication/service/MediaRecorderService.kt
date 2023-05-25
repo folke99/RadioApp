@@ -58,6 +58,7 @@ class MediaRecorderService : Service() {
             return
         }
 
+        // Audio properties are configured in the utils/Constants.kt file
         audioRecord = AudioRecord(
             MediaRecorder.AudioSource.UNPROCESSED,
             Constants.SAMPLE_RATE,

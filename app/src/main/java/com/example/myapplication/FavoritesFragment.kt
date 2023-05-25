@@ -19,7 +19,7 @@ import com.example.myapplication.viewmodel.FavoritesViewModelFactory
 import com.example.myapplication.viewmodel.SharedMiniPlayerViewModel
 
 /**
- * A fragment for displaying favorite stations
+ * A fragment for displaying favorite stations in a recycler view list
  */
 class FavoritesFragment : Fragment() {
 
@@ -38,13 +38,16 @@ class FavoritesFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentFavoritesBinding.inflate(inflater)
 
+        // Get global state
         val appContainer = RadioApp.getAppContainer(requireContext())
         val stationRepository = appContainer.stationRepository
         val application = requireNotNull(this.activity).application
 
+        // Bind view model
         viewModelFactory = FavoritesViewModelFactory(stationRepository, application)
         viewModel = ViewModelProvider(this, viewModelFactory)[FavoritesViewModel::class.java]
 
+        // Add offset at the bottom of the list
         val bottomSpaceHeight = resources.getDimensionPixelSize(R.dimen.list_end_padding)
         val dividerHeight = resources.getDimensionPixelSize(R.dimen.list_divider_height)
         binding.favoritesList.addItemDecoration(RecyclerViewDecorator(bottomSpaceHeight, dividerHeight))
@@ -54,6 +57,7 @@ class FavoritesFragment : Fragment() {
                 it,
                 FavoritesListClickListener { station -> sharedMiniPlayerViewModel.startPlayer(station) },
                 FavoritesListLongClickListener { station ->
+                    // Hide the mini player and show station details
                     sharedMiniPlayerViewModel.setInvisible()
                     val action = SearchFragmentDirections
                         .actionNavigationSearchToNavigationStationDetails(station)
